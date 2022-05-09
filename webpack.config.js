@@ -7,7 +7,7 @@ module.exports = {
   devtool: 'inline-source-map',
   context: path.resolve(__dirname, './src'),
   entry: {
-    main: './index.js',
+    index: './index.js',
   },
   output: {
     filename: '[name].[hash].bundle.js',
@@ -29,7 +29,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Virtual Keyboard',
       scriptLoading: 'blocking',
-      template: './index.html',
+      templateContent: '',
     }),
     new ESLintWebpackPlugin(),
   ],

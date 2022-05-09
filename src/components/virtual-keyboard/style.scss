@@ -1,0 +1,135 @@
+.virtual-keyboard {
+  width: 700px;
+}
+
+.text-field {
+  resize: none;
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  border: 1px solid rgba(41, 46, 50, 0.2);
+  outline: none;
+  transition: all 0.3s;
+
+  &:hover {
+    border: 1px solid rgba(41, 46, 50, 0.5);
+  }
+
+  &:active {
+    border: 1px solid rgba(41, 46, 50, 1);
+  }
+
+  &:focus-visible {
+    border: 1px solid rgba(41, 46, 50, 1);
+    background-color: rgba(41, 46, 50, 0.05);
+  }
+}
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background-color: rgba(41, 46, 50, 1);
+  padding: 5px;
+  border-radius: 4px;
+
+  &__line {
+    display: flex;
+    gap: 5px;
+  }
+
+  &__key {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 4rem;
+    height: 4rem;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.25);
+    color: white;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.35);
+    }
+
+    &:active {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &:focus-visible {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &--color-primary {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    &--color-secondary {
+      background-color: rgba(80, 120, 190, 1);
+
+      &:hover {
+        background-color: rgba(90, 137, 217, 1);
+      }
+
+      &:active {
+        background-color: rgb(70, 105, 167);
+      }
+
+      &:focus {
+        background-color: rgb(70, 105, 167);
+      }
+    }
+
+    &--func {
+      width: 100%;
+
+      &-caps {
+        position: relative;
+
+        &::after {
+          content: '';
+          display: block;
+          width: 5px;
+          height: 5px;
+          position: absolute;
+          top: 10px;
+          right: 5px;
+          background-color: rgba(41, 46, 50, 1);
+          border-radius: 50%;
+        }
+      }
+
+    }
+
+    &--split {
+      background: none;
+      flex-direction: column;
+      gap: 3px;
+
+      &:hover {
+        background: none;
+      }
+
+      &:active {
+        background: none;
+      }
+
+      & > button:nth-child(1) {
+        border-radius: 4px 4px 0 0;
+      }
+
+      & > button:nth-child(2) {
+        border-radius: 0 0 4px 4px;
+      }
+    }
+  }
+}
+
+.material-icons {
+  font-size: 16px;
+}

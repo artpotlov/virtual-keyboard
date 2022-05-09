@@ -1,3 +1,3 @@
-import * as virtualKeyboardComponent from './app';
+import virtualKeyboardComponent from './app';
 
 export default virtualKeyboardComponent;

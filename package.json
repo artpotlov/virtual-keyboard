@@ -37,6 +37,7 @@
     "webpack-dev-server": "^4.9.0"
   },
   "dependencies": {
+    "material-icons": "^1.10.11",
     "normalize.css": "^8.0.1"
   }
 }

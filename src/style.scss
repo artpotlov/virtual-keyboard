@@ -1,1 +1,25 @@
 @import '~normalize.css';
+@import '~material-icons/iconfont/material-icons.css';
+
+html {
+  box-sizing: border-box;
+  font-size: 10px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  width: 100vw;
+  height: 100vh;
+}
+
+body > * {
+  max-width: 70rem;
+}
