@@ -4,9 +4,93 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
   <title>Document</title>
 </head>
 <body>
-  Test
+  <div class="container">
+    <form><textarea name="text-field" id="text-field" placeholder="Enter some text" class="text-field"></textarea></form>
+    <div class="keyboard">
+      <div class="keyboard__line">
+        <button class="keyboard__key">`</button>
+        <button class="keyboard__key">1</button>
+        <button class="keyboard__key">2</button>
+        <button class="keyboard__key">3</button>
+        <button class="keyboard__key">4</button>
+        <button class="keyboard__key">5</button>
+        <button class="keyboard__key">6</button>
+        <button class="keyboard__key">7</button>
+        <button class="keyboard__key">8</button>
+        <button class="keyboard__key">9</button>
+        <button class="keyboard__key">0</button>
+        <button class="keyboard__key">-</button>
+        <button class="keyboard__key">=</button>
+        <button class="keyboard__key keyboard__key--func keyboard__key--color-primary"><span class="material-icons">backspace</span></button>
+      </div>
+      <div class="keyboard__line">
+        <button class="keyboard__key keyboard__key--func keyboard__key--color-primary"><span class="material-icons">keyboard_tab</span></button>
+        <button class="keyboard__key">q</button>
+        <button class="keyboard__key">w</button>
+        <button class="keyboard__key">e</button>
+        <button class="keyboard__key">r</button>
+        <button class="keyboard__key">t</button>
+        <button class="keyboard__key">y</button>
+        <button class="keyboard__key">u</button>
+        <button class="keyboard__key">i</button>
+        <button class="keyboard__key">o</button>
+        <button class="keyboard__key">p</button>
+        <button class="keyboard__key">[</button>
+        <button class="keyboard__key">]</button>
+        <button class="keyboard__key">\</button>
+        <button class="keyboard__key keyboard__key--func keyboard__key--color-primary">Del</button>
+      </div>
+      <div class="keyboard__line">
+        <button class="keyboard__key keyboard__key--func keyboard__key--func-caps keyboard__key--color-primary">Caps lock</button>
+        <button class="keyboard__key">a</button>
+        <button class="keyboard__key">s</button>
+        <button class="keyboard__key">d</button>
+        <button class="keyboard__key">f</button>
+        <button class="keyboard__key">g</button>
+        <button class="keyboard__key">h</button>
+        <button class="keyboard__key">j</button>
+        <button class="keyboard__key">k</button>
+        <button class="keyboard__key">l</button>
+        <button class="keyboard__key">;</button>
+        <button class="keyboard__key">'</button>
+        <button class="keyboard__key keyboard__key--func keyboard__key--color-primary">Enter</button>
+      </div>
+      <div class="keyboard__line">
+        <button class="keyboard__key keyboard__key--func keyboard__key--color-primary">Shift</button>
+        <button class="keyboard__key">z</button>
+        <button class="keyboard__key">x</button>
+        <button class="keyboard__key">c</button>
+        <button class="keyboard__key">v</button>
+        <button class="keyboard__key">b</button>
+        <button class="keyboard__key">n</button>
+        <button class="keyboard__key">m</button>
+        <button class="keyboard__key">,</button>
+        <button class="keyboard__key">.</button>
+        <button class="keyboard__key">/</button>
+        <button class="keyboard__key keyboard__key--func keyboard__key--color-primary">Shift</button>
+      </div>
+      <div class="keyboard__line">
+        <button class="keyboard__key keyboard__key--color-primary">Ctrl</button>
+        <button class="keyboard__key keyboard__key--color-primary">Fn</button>
+        <button class="keyboard__key keyboard__key--color-primary">Win</button>
+        <button class="keyboard__key keyboard__key--color-primary">Alt</button>
+        <button class="keyboard__key keyboard__key--func"><span class="material-icons">space_bar</span></button>
+        <button class="keyboard__key keyboard__key--color-primary">Alt</button>
+        <button class="keyboard__key keyboard__key--color-primary">Ctrl</button>
+        <button class="keyboard__key keyboard__key--color-secondary"><span class="material-icons">keyboard_arrow_left</span></button>
+        <div class="keyboard__key keyboard__key--split">
+          <button class="keyboard__key keyboard__key--color-secondary"><span class="material-icons">keyboard_arrow_up</span></button>
+          <button class="keyboard__key keyboard__key--color-secondary"><span class="material-icons">keyboard_arrow_down</span></button>
+        </div>
+        <button class="keyboard__key keyboard__key--color-secondary"><span class="material-icons">keyboard_arrow_right</span></button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
