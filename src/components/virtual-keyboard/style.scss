@@ -84,9 +84,12 @@
         background-color: rgb(70, 105, 167);
       }
 
-      &:focus {
+      &:focus-visible {
         background-color: rgb(70, 105, 167);
       }
+    }
+    &--color-secondary-pressed {
+      background-color: rgb(70, 105, 167);
     }
 
     &--func {

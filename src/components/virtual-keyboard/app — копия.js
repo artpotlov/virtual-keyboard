@@ -38,7 +38,6 @@ const keyboardLayout = {
 };
 
 let onCaps = false;
-let curPos = 0;
 
 const createSpanIcon = (name) => {
   const span = document.createElement('span');
@@ -47,7 +46,9 @@ const createSpanIcon = (name) => {
   return span;
 };
 
-const updateKeyboard = (container, keyLayout, oncaps = false, onshift = false) => {
+const updateKeyboard = (elementToInsert, keyLayout, oncaps = false, onshift = false) => {
+  document.querySelector('.keyboard').innerHTML = '';
+  const keyCode = [...keyLayout.keyCode];
   let layout = keyLayout.en.default;
   if (localStorage.getItem('keyboardLocale')) {
     if (localStorage.getItem('keyboardLocale') === 'en') {
@@ -68,29 +69,136 @@ const updateKeyboard = (container, keyLayout, oncaps = false, onshift = false) =
     localStorage.setItem('keyboardLocale', 'en');
   }
 
-  const keys = document.querySelectorAll('.keyboard__key');
-  const keysLayout = [...layout[0], ...layout[1], ...layout[2], ...layout[3], ...layout[4]];
+  layout.forEach((line) => {
+    const keyboardLine = document.createElement('div');
+    keyboardLine.classList.add('keyboard__line');
 
-  for (let i = 0; i < keys.length; i += 1) {
-    if (keys[i].classList.contains('keyboard__key--func-caps')) {
-      if (oncaps) {
-        keys[i].classList.add('keyboard__key--func-caps-active');
-      } else {
-        keys[i].classList.remove('keyboard__key--func-caps-active');
+    line.forEach((key) => {
+      let keyboardKey = document.createElement('button');
+
+      if (key === 'arrows_up_down') {
+        keyboardKey = document.createElement('div');
+        const btnUp = document.createElement('button');
+        const btnDown = document.createElement('button');
+
+        btnUp.classList.add('keyboard__key');
+        btnUp.setAttribute('data-key', 'ArrowUp');
+        btnUp.classList.add('keyboard__key--color-secondary');
+        btnDown.classList.add('keyboard__key');
+        btnDown.setAttribute('data-key', 'ArrowDown');
+        btnDown.classList.add('keyboard__key--color-secondary');
+        keyboardKey.classList.add('keyboard__key--split');
+
+        btnUp.append(createSpanIcon('keyboard_arrow_up'));
+        btnDown.append(createSpanIcon('keyboard_arrow_down'));
+
+        keyboardKey.append(btnUp, btnDown);
       }
-    }
-    if (!keyLayout.func.includes(keysLayout[i]) && i < keysLayout.length) {
-      if (oncaps) {
-        if (onshift) {
-          keys[i].textContent = keysLayout[i].toLowerCase();
-        } else {
-          keys[i].textContent = keysLayout[i].toUpperCase();
+
+      if (key === 'arrow_left' || key === 'arrow_right') {
+        keyboardKey.classList.add('keyboard__key--color-secondary');
+
+        if (key === 'arrow_left') {
+          keyboardKey.append(createSpanIcon('keyboard_arrow_left'));
         }
-      } else {
-        keys[i].textContent = keysLayout[i];
+
+        if (key === 'arrow_right') {
+          keyboardKey.append(createSpanIcon('keyboard_arrow_right'));
+        }
       }
-    }
-  }
+
+      if (key === 'backspace') {
+        keyboardKey.classList.add('keyboard__key--func');
+        keyboardKey.classList.add('keyboard__key--color-primary');
+        keyboardKey.append(createSpanIcon('backspace'));
+      }
+
+      if (key === 'tab') {
+        keyboardKey.classList.add('keyboard__key--func');
+        keyboardKey.classList.add('keyboard__key--color-primary');
+        keyboardKey.append(createSpanIcon('keyboard_tab'));
+      }
+
+      if (key === 'del') {
+        keyboardKey.classList.add('keyboard__key--func');
+        keyboardKey.classList.add('keyboard__key--color-primary');
+        keyboardKey.textContent = 'Del';
+      }
+
+      if (key === 'caps_lock') {
+        keyboardKey.classList.add('keyboard__key--func');
+        keyboardKey.classList.add('keyboard__key--func-caps');
+        keyboardKey.classList.add('keyboard__key--color-primary');
+        if (oncaps) {
+          keyboardKey.classList.add('keyboard__key--func-caps-active');
+        } else {
+          keyboardKey.classList.remove('keyboard__key--func-caps-active');
+        }
+        keyboardKey.textContent = 'Caps Lock';
+      }
+
+      if (key === 'enter') {
+        keyboardKey.classList.add('keyboard__key--func');
+        keyboardKey.classList.add('keyboard__key--color-primary');
+        keyboardKey.textContent = 'Enter';
+      }
+
+      if (key === 'shift') {
+        keyboardKey.classList.add('keyboard__key--func');
+        keyboardKey.classList.add('keyboard__key--color-primary');
+        keyboardKey.textContent = 'Shift';
+      }
+
+      if (key === 'control') {
+        keyboardKey.classList.add('keyboard__key--color-primary');
+        keyboardKey.textContent = 'Ctrl';
+      }
+
+      if (key === 'lang') {
+        keyboardKey.classList.add('keyboard__key--color-primary');
+        keyboardKey.append(createSpanIcon('language'));
+      }
+
+      if (key === 'win') {
+        keyboardKey.classList.add('keyboard__key--color-primary');
+        keyboardKey.textContent = 'Win';
+      }
+
+      if (key === 'alt') {
+        keyboardKey.classList.add('keyboard__key--color-primary');
+        keyboardKey.textContent = 'Alt';
+      }
+
+      if (key === 'space_bar') {
+        keyboardKey.classList.add('keyboard__key--func');
+        keyboardKey.classList.add('keyboard__key--color-primary');
+        keyboardKey.append(createSpanIcon('space_bar'));
+      }
+
+      if (!keyLayout.func.includes(key)) {
+        if (oncaps) {
+          if (onshift) {
+            keyboardKey.textContent = key.toLowerCase();
+          } else {
+            keyboardKey.textContent = key.toUpperCase();
+          }
+        } else {
+          keyboardKey.textContent = key;
+        }
+      }
+
+      keyboardKey.classList.add('keyboard__key');
+
+      const keyCurrentCode = keyCode.shift();
+      if (keyCurrentCode !== 'ArrowUpDown') {
+        keyboardKey.setAttribute('data-key', keyCurrentCode);
+      }
+
+      keyboardLine.append(keyboardKey);
+    });
+
+    elementToInsert.append(keyboardLine);
+  });
 };
 
 const initKeyboard = (elementToInsert, keyLayout) => {
@@ -251,11 +359,8 @@ virtualKeyboardComponent.append(pElement);
 document.addEventListener('keydown', (event) => {
   event.preventDefault();
   const element = document.querySelector(`[data-key="${event.code}"]`);
-  if (event.code.match(/^Arrow(Up|Down|Left|Right)$/g) !== null) {
-    element.classList.add('keyboard__key--color-secondary-pressed');
-  } else {
-    element.classList.add('keyboard__key--color-primary-pressed');
-  }
+  element.classList.add('keyboard__key--color-primary-pressed');
+  updateKeyboard(keyboard, keyboardLayout, event.getModifierState('CapsLock'), event.getModifierState('Shift'));
   if (event.ctrlKey && event.altKey) {
     if (localStorage.getItem('keyboardLocale') === 'en') {
       localStorage.setItem('keyboardLocale', 'ru');
@@ -264,29 +369,17 @@ document.addEventListener('keydown', (event) => {
     }
     updateKeyboard(keyboard, keyboardLayout, event.getModifierState('CapsLock'), event.getModifierState('Shift'));
     onCaps = event.getModifierState('CapsLock');
-  } else {
-    updateKeyboard(keyboard, keyboardLayout, event.getModifierState('CapsLock'), event.getModifierState('Shift'));
   }
 });
 
 document.addEventListener('keyup', (event) => {
   event.preventDefault();
   const element = document.querySelector(`[data-key="${event.code}"]`);
-  if (event.code.match(/^Arrow(Up|Down|Left|Right)$/g) !== null) {
-    element.classList.remove('keyboard__key--color-secondary-pressed');
-  } else {
-    element.classList.remove('keyboard__key--color-primary-pressed');
-  }
+  element.classList.remove('keyboard__key--color-primary-pressed');
   updateKeyboard(keyboard, keyboardLayout, event.getModifierState('CapsLock'), event.getModifierState('Shift'));
+  onCaps = event.getModifierState('CapsLock');
   if (event.code.match(/(Key[a-zA-Z])|(Digit[0-9])|(Slash)|(Period)|(Comma)|(Quote)|(Semicolon)|(Backslash)/g) !== null) {
     textArea.value += element.textContent;
-  }
-
-  if (event.code === 'Delete') {
-    curPos = textArea.selectionStart;
-    const str = textArea.value;
-    textArea.value = str.slice(0, curPos) + str.slice(curPos + 1, str.length);
-    textArea.setSelectionRange(curPos, curPos);
   }
 
   if (event.code === 'Space') {
@@ -303,52 +396,29 @@ document.addEventListener('keyup', (event) => {
 });
 
 keyboard.addEventListener('click', (event) => {
-  const eventT = event.target.dataset.key !== undefined ? event.target : event.target.parentNode;
-
-  if (eventT.dataset.key.match(/(Key[a-zA-Z])|(Digit[0-9])|(Slash)|(Period)|(Comma)|(Quote)|(Semicolon)|(Backslash)/g) !== null) {
-    textArea.value += eventT.textContent;
+  if (event.target.dataset.key.match(/(Key[a-zA-Z])|(Digit[0-9])|(Slash)|(Period)|(Comma)|(Quote)|(Semicolon)|(Backslash)/g) !== null) {
+    textArea.value += event.target.textContent;
   }
 
-  if (eventT.dataset.key === 'Space') {
+  if (event.target.dataset.key === 'Space') {
     textArea.value += ' ';
   }
 
-  if (eventT.dataset.key === 'Enter') {
+  if (event.target.dataset.key === 'Enter') {
     textArea.value += '\n';
   }
 
-  if (eventT.dataset.key === 'Backspace') {
+  if (event.target.dataset.key === 'Backspace') {
     textArea.value = textArea.value.substring(0, textArea.value.length - 1);
   }
 
-  if (eventT.dataset.key === 'Tab') {
-    textArea.value += '\t';
-  }
-
-  if (eventT.dataset.key === 'Delete') {
-    curPos = textArea.selectionStart;
-    const str = textArea.value;
-    textArea.value = str.slice(0, curPos) + str.slice(curPos + 1, str.length);
-    textArea.setSelectionRange(curPos, curPos);
-  }
-
-  if (eventT.dataset.key === 'CapsLock') {
+  if (event.target.dataset.key === 'CapsLock') {
     if (onCaps) {
       onCaps = false;
     } else {
       onCaps = true;
     }
     updateKeyboard(keyboard, keyboardLayout, onCaps, false);
-  }
-
-  if (eventT.dataset.key === 'Lang') {
-    if (localStorage.getItem('keyboardLocale') === 'en') {
-      localStorage.setItem('keyboardLocale', 'ru');
-    } else {
-      localStorage.setItem('keyboardLocale', 'en');
-    }
-    updateKeyboard(keyboard, keyboardLayout, event.getModifierState('CapsLock'), event.getModifierState('Shift'));
-    onCaps = event.getModifierState('CapsLock');
   }
 });
 
