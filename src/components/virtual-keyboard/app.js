@@ -306,6 +306,20 @@ document.addEventListener('keyup', (event) => {
   }
 });
 
+keyboard.addEventListener('mousedown', (event) => {
+  const eventT = event.target.dataset.key !== undefined ? event.target : event.target.parentNode;
+  if (eventT.dataset.key === 'ShiftLeft' || eventT.dataset.key === 'ShiftRight') {
+    updateKeyboard(keyboard, keyboardLayout, onCaps, true);
+  }
+});
+
+keyboard.addEventListener('mouseup', (event) => {
+  const eventT = event.target.dataset.key !== undefined ? event.target : event.target.parentNode;
+  if (eventT.dataset.key === 'ShiftLeft' || eventT.dataset.key === 'ShiftRight') {
+    updateKeyboard(keyboard, keyboardLayout, onCaps, false);
+  }
+});
+
 keyboard.addEventListener('click', (event) => {
   const eventT = event.target.dataset.key !== undefined ? event.target : event.target.parentNode;
 
