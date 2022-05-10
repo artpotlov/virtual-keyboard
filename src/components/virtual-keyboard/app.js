@@ -289,6 +289,10 @@ document.addEventListener('keyup', (event) => {
     textArea.setSelectionRange(curPos, curPos);
   }
 
+  if (event.code === 'Tab') {
+    textArea.value += '\t';
+  }
+
   if (event.code === 'Space') {
     textArea.value += ' ';
   }
