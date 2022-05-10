@@ -352,6 +352,10 @@ form.append(textArea);
 virtualKeyboardComponent.append(textArea);
 virtualKeyboardComponent.append(keyboard);
 
+const pElement = document.createElement('p');
+pElement.textContent = 'Клавиатура создана в Windows. Переключение языка CTRL + ALT';
+virtualKeyboardComponent.append(pElement);
+
 document.addEventListener('keydown', (event) => {
   event.preventDefault();
   const element = document.querySelector(`[data-key="${event.code}"]`);
