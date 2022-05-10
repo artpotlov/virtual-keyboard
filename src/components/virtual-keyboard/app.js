@@ -37,6 +37,8 @@ const keyboardLayout = {
   func: ['backspace', 'tab', 'del', 'caps_lock', 'shift', 'enter', 'control', 'lang', 'win', 'alt', 'space_bar', 'arrow_left', 'arrows_up_down', 'arrow_right'],
 };
 
+let onCaps = false;
+
 const createSpanIcon = (name) => {
   const span = document.createElement('span');
   span.classList.add('material-icons');
@@ -44,17 +46,27 @@ const createSpanIcon = (name) => {
   return span;
 };
 
-const updateKeyboard = (elementToInsert, keyLayout, oncaps = false) => {
+const updateKeyboard = (elementToInsert, keyLayout, oncaps = false, onshift = false) => {
   document.querySelector('.keyboard').innerHTML = '';
   const keyCode = [...keyLayout.keyCode];
   let layout = keyLayout.en.default;
   if (localStorage.getItem('keyboardLocale')) {
     if (localStorage.getItem('keyboardLocale') === 'en') {
-      layout = keyLayout.en.default;
+      if (onshift) {
+        layout = keyLayout.en.shift;
+      } else {
+        layout = keyboardLayout.en.default;
+      }
     }
     if (localStorage.getItem('keyboardLocale') === 'ru') {
-      layout = keyLayout.ru.default;
+      if (onshift) {
+        layout = keyLayout.ru.shift;
+      } else {
+        layout = keyboardLayout.ru.default;
+      }
     }
+  } else {
+    localStorage.setItem('keyboardLocale', 'en');
   }
 
   layout.forEach((line) => {
@@ -165,7 +177,11 @@ const updateKeyboard = (elementToInsert, keyLayout, oncaps = false) => {
 
       if (!keyLayout.func.includes(key)) {
         if (oncaps) {
-          keyboardKey.textContent = key.toUpperCase();
+          if (onshift) {
+            keyboardKey.textContent = key.toLowerCase();
+          } else {
+            keyboardKey.textContent = key.toUpperCase();
+          }
         } else {
           keyboardKey.textContent = key;
         }
@@ -195,6 +211,8 @@ const initKeyboard = (elementToInsert, keyLayout) => {
     if (localStorage.getItem('keyboardLocale') === 'ru') {
       layout = keyLayout.ru.default;
     }
+  } else {
+    localStorage.setItem('keyboardLocale', 'en');
   }
 
   layout.forEach((line) => {
@@ -338,17 +356,65 @@ document.addEventListener('keydown', (event) => {
   event.preventDefault();
   const element = document.querySelector(`[data-key="${event.code}"]`);
   element.classList.add('keyboard__key--color-primary-pressed');
+  updateKeyboard(keyboard, keyboardLayout, event.getModifierState('CapsLock'), event.getModifierState('Shift'));
+  if (event.ctrlKey && event.altKey) {
+    if (localStorage.getItem('keyboardLocale') === 'en') {
+      localStorage.setItem('keyboardLocale', 'ru');
+    } else {
+      localStorage.setItem('keyboardLocale', 'en');
+    }
+    updateKeyboard(keyboard, keyboardLayout, event.getModifierState('CapsLock'), event.getModifierState('Shift'));
+    onCaps = event.getModifierState('CapsLock');
+  }
 });
 
 document.addEventListener('keyup', (event) => {
   event.preventDefault();
   const element = document.querySelector(`[data-key="${event.code}"]`);
   element.classList.remove('keyboard__key--color-primary-pressed');
-
-  updateKeyboard(keyboard, keyboardLayout, event.getModifierState('CapsLock'));
-
+  updateKeyboard(keyboard, keyboardLayout, event.getModifierState('CapsLock'), event.getModifierState('Shift'));
+  onCaps = event.getModifierState('CapsLock');
   if (event.code.match(/(Key[a-zA-Z])|(Digit[0-9])|(Slash)|(Period)|(Comma)|(Quote)|(Semicolon)|(Backslash)/g) !== null) {
     textArea.value += element.textContent;
+  }
+
+  if (event.code === 'Space') {
+    textArea.value += ' ';
+  }
+
+  if (event.code === 'Enter') {
+    textArea.value += '\n';
+  }
+
+  if (event.code === 'Backspace') {
+    textArea.value = textArea.value.substring(0, textArea.value.length - 1);
+  }
+});
+
+keyboard.addEventListener('click', (event) => {
+  if (event.target.dataset.key.match(/(Key[a-zA-Z])|(Digit[0-9])|(Slash)|(Period)|(Comma)|(Quote)|(Semicolon)|(Backslash)/g) !== null) {
+    textArea.value += event.target.textContent;
+  }
+
+  if (event.target.dataset.key === 'Space') {
+    textArea.value += ' ';
+  }
+
+  if (event.target.dataset.key === 'Enter') {
+    textArea.value += '\n';
+  }
+
+  if (event.target.dataset.key === 'Backspace') {
+    textArea.value = textArea.value.substring(0, textArea.value.length - 1);
+  }
+
+  if (event.target.dataset.key === 'CapsLock') {
+    if (onCaps) {
+      onCaps = false;
+    } else {
+      onCaps = true;
+    }
+    updateKeyboard(keyboard, keyboardLayout, onCaps, false);
   }
 });
 
