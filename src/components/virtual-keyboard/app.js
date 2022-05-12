@@ -68,7 +68,7 @@ const updateKeyboard = (container, keyLayout, oncaps = false, onshift = false) =
     localStorage.setItem('keyboardLocale', 'en');
   }
 
-  const keys = document.querySelectorAll('.keyboard__key');
+  const keys = container.querySelectorAll('.keyboard__key');
   const keysLayout = [...layout[0], ...layout[1], ...layout[2], ...layout[3], ...layout[4]];
 
   for (let i = 0; i < keys.length; i += 1) {
@@ -274,11 +274,27 @@ document.addEventListener('keyup', (event) => {
   const element = document.querySelector(`[data-key="${event.code}"]`);
   if (event.code.match(/^Arrow(Up|Down|Left|Right)$/g) !== null) {
     element.classList.remove('keyboard__key--color-secondary-pressed');
+
+    if (event.code === 'ArrowUp') {
+      textArea.value += '↑';
+    }
+
+    if (event.code === 'ArrowDown') {
+      textArea.value += '↓';
+    }
+
+    if (event.code === 'ArrowLeft') {
+      textArea.value += '←';
+    }
+
+    if (event.code === 'ArrowRight') {
+      textArea.value += '→';
+    }
   } else {
     element.classList.remove('keyboard__key--color-primary-pressed');
   }
   updateKeyboard(keyboard, keyboardLayout, event.getModifierState('CapsLock'), event.getModifierState('Shift'));
-  if (event.code.match(/(Key[a-zA-Z])|(Digit[0-9])|(Slash)|(Period)|(Comma)|(Quote)|(Semicolon)|(Backslash)/g) !== null) {
+  if (event.code.match(/(Key[a-zA-Z])|(Digit[0-9])|(Slash)|(Period)|(Comma)|(Quote)|(Semicolon)|(Backslash)|(Backquote)|(Minus)|(Equal)/g) !== null) {
     textArea.value += element.textContent;
   }
 
@@ -323,8 +339,24 @@ keyboard.addEventListener('mouseup', (event) => {
 keyboard.addEventListener('click', (event) => {
   const eventT = event.target.dataset.key !== undefined ? event.target : event.target.parentNode;
 
-  if (eventT.dataset.key.match(/(Key[a-zA-Z])|(Digit[0-9])|(Slash)|(Period)|(Comma)|(Quote)|(Semicolon)|(Backslash)/g) !== null) {
+  if (eventT.dataset.key.match(/(Key[a-zA-Z])|(Digit[0-9])|(Slash)|(Period)|(Comma)|(Quote)|(Semicolon)|(Backslash)|(Backquote)|(Minus)|(Equal)/g) !== null) {
     textArea.value += eventT.textContent;
+  }
+
+  if (eventT.dataset.key === 'ArrowUp') {
+    textArea.value += '↑';
+  }
+
+  if (eventT.dataset.key === 'ArrowDown') {
+    textArea.value += '↓';
+  }
+
+  if (eventT.dataset.key === 'ArrowLeft') {
+    textArea.value += '←';
+  }
+
+  if (eventT.dataset.key === 'ArrowRight') {
+    textArea.value += '→';
   }
 
   if (eventT.dataset.key === 'Space') {
