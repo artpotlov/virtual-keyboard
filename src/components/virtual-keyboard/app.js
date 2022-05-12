@@ -376,6 +376,7 @@ keyboard.addEventListener('click', (event) => {
   }
 
   if (eventT.dataset.key === 'Delete') {
+    textArea.focus();
     curPos = textArea.selectionStart;
     const str = textArea.value;
     textArea.value = str.slice(0, curPos) + str.slice(curPos + 1, str.length);
